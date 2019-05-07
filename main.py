@@ -31,9 +31,9 @@ def get_pig_latin(formatted_fact):
     """
         Translates random fact from unkno.com into pig latin and get new url
         :param: fact string
-        :return: url for pig latin translation 
+        :return: url for pig latin translation
     """
-    url = "https://hidden-journey-62459/herokuapp.com/piglatinize/"
+    url = "https://hidden-journey-62459.herokuapp.com/piglatinize/"
     payload = {"input_text": formatted_fact}
 
     translate_url = requests.post(url, data=payload, allow_redirects=False)
