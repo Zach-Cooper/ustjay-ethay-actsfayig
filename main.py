@@ -20,21 +20,21 @@ def get_fact():
     response = requests.get("http://unkno.com")
 
     soup = BeautifulSoup(response.content, "html.parser")
-    facts = soup.find_all("div", id="content")
+    fact = soup.find_all("div", id="content")
 
-    formatted_facts = facts[0].getText()
+    formatted_fact = fact[0].getText()
 
-    return formatted_facts
+    return formatted_fact
 
 
-def get_pig_latin(fact):
+def get_pig_latin(formatted_fact):
     """
         Translates random fact from unkno.com into pig latin and get new url
         :param: fact string
         :return: url for pig latin translation 
     """
     url = "https://hidden-journey-62459/herokuapp.com/piglatinize/"
-    payload = {"input_text": fact}
+    payload = {"input_text": formatted_fact}
 
     translate_url = requests.post(url, data=payload, allow_redirects=False)
     new_page = translate_url.headers["Location"]
@@ -42,17 +42,17 @@ def get_pig_latin(fact):
     return new_page
 
 
-def get_translation(get_pig_latin):
+def get_translation(new_page):
     """
         Return pig latin translation
         :param: url translation from get_pid_latin function
         :return: string of pig latin translated
     """
-    response = requests.get(get_pig_latin)
+    response = requests.get(new_page)
     soup = BeautifulSoup(response.content, "html.parser")
 
     fact_translated = soup.find("body").getText()
-    fact_translated_stripped = fact_translated.resplace("Pig Latin\nEsultry", "")
+    fact_translated_stripped = fact_translated.replace("Pig Latin\nEsultry", "")
 
     return fact_translated_stripped
 
