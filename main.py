@@ -37,24 +37,23 @@ def get_pig_latin(formatted_fact):
     payload = {"input_text": formatted_fact}
 
     translate_url = requests.post(url, data=payload, allow_redirects=False)
-    new_page = translate_url.headers["Location"]
+    translate_new_page = translate_url.headers["Location"]
 
-    return new_page
+    return translate_new_page
 
 
-def get_translation(new_page):
+def get_translation(translate_new_page):
     """
         Return pig latin translation
         :param: url translation from get_pid_latin function
         :return: string of pig latin translated
     """
-    response = requests.get(new_page)
+    response = requests.get(translate_new_page)
     soup = BeautifulSoup(response.content, "html.parser")
 
-    fact_translated = soup.find("body").getText()
-    fact_translated_stripped = fact_translated.replace("Pig Latin\nEsultry", "")
+    translated_fact = soup.find("body").getText().replace("Pig Latin", " ").replace("Esultray", " ")
 
-    return fact_translated_stripped
+    return translated_fact
 
 
 @app.route('/')
@@ -65,9 +64,9 @@ def home():
     """
     fact = get_fact().strip()
 
-    get_new_page = get_pig_latin(fact)
+    get_new_page_url = get_pig_latin(fact)
 
-    translation = get_translation(get_new_page)
+    translation = get_translation(get_new_page_url)
 
     return translation
 
